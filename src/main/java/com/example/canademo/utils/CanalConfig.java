@@ -1,5 +1,6 @@
-package com.example.canademo;
+package com.example.canademo.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.otter.canal.client.CanalConnector;
 import com.alibaba.otter.canal.client.CanalConnectors;
@@ -7,23 +8,37 @@ import com.alibaba.otter.canal.protocol.CanalEntry;
 import com.alibaba.otter.canal.protocol.Message;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootApplication
-public class CanaDemoApplication {
+/**
+ * @Description: TODO
+ * @Author: liuchang
+ * @CreateTime: 2022-10-14  11:04
+ */
 
-    public static void main(String[] args) throws InterruptedException, InvalidProtocolBufferException {
-        SpringApplication.run(CanaDemoApplication.class, args);
+public class CanalConfig implements Runnable {
+
+    private List<String> list = new ArrayList<>();
+
+    public List<String> getData() {
+        return list;
+    }
 
 
+    @Override
+    public void run() {
 
         //TODO 获取连接
-        CanalConnector canalConnector = CanalConnectors.newSingleConnector(new InetSocketAddress("192.168.202.102", 11111), "example", "", "");
+        CanalConnector canalConnector = CanalConnectors.newSingleConnector(
+                new InetSocketAddress("192.168.202.102", 11111), "example", "", "");
 
+
+        System.out.println(Thread.currentThread().getName());
         while (true) {
 
             //TODO 连接
@@ -41,7 +56,11 @@ public class CanaDemoApplication {
             //TODO 判断集合是否为空,如果为空,则等待一会继续拉取数据
             if (entries.size() <= 0) {
                 System.out.println("当次抓取没有数据，休息一会。。。。。。");
-                Thread.sleep(1000);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             } else {
 
                 //TODO 遍历entries，单条解析
@@ -60,7 +79,12 @@ public class CanaDemoApplication {
                     if (CanalEntry.EntryType.ROWDATA.equals(entryType)) {
 
                         //5.反序列化数据
-                        CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(storeValue);
+                        CanalEntry.RowChange rowChange = null;
+                        try {
+                            rowChange = CanalEntry.RowChange.parseFrom(storeValue);
+                        } catch (InvalidProtocolBufferException e) {
+                            e.printStackTrace();
+                        }
 
                         //6.获取当前事件的操作类型
                         CanalEntry.EventType eventType = rowChange.getEventType();
@@ -84,12 +108,17 @@ public class CanaDemoApplication {
                             }
 
 
-
                             //数据打印
-                            System.out.println("Table:" + tableName +
-                                    ",EventType:" + eventType +
-                                    ",Before:" + beforeData +
-                                    ",After:" + afterData);
+                            System.out.println("Table:" + tableName + ",EventType:" + eventType + ",Before:" + beforeData + ",After:" + afterData);
+
+                            if (afterData != null || afterData.isEmpty()) {
+//                                list.add(JSON.toJSONString(afterData));
+                                DataInfo.setClq(JSON.toJSONString(afterData));
+                            }
+                            if (beforeData != null || beforeData.isEmpty()) {
+//                                list.add(JSON.toJSONString(beforeData));
+                                DataInfo.setClq(JSON.toJSONString(beforeData));
+                            }
 
 
                         }
@@ -99,8 +128,5 @@ public class CanaDemoApplication {
                 }
             }
         }
-
-
     }
-
 }
