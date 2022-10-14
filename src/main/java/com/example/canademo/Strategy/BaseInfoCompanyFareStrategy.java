@@ -10,17 +10,11 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class BaseInfoCompanyFareStrategy implements IStrategy{
-
+public class BaseInfoCompanyFareStrategy extends IStrategy{
 
     @Override
-    public String handleData(String sourceData) {
+    String handleData(String sourceData) {
         return null;
-    }
-
-    @Override
-    public void sendData(String sourceData) {
-
     }
 
     @Override

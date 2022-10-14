@@ -2,11 +2,18 @@ package com.example.canademo.Strategy;
 
 import org.springframework.beans.factory.InitializingBean;
 
-public interface IStrategy extends InitializingBean {
+public abstract class IStrategy implements InitializingBean {
 
-    //数据进一步组装
-    String handleData(String sourceData);
 
     //数据上报
-    void sendData(String sourceData);
+    public void sendData(String sourceData){
+        //处理数据
+        handleData(sourceData);
+
+        //发送kafka
+
+    }
+
+    //数据进一步组装
+    abstract String handleData(String sourceData);
 }

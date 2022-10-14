@@ -11,21 +11,17 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class BaseInfoVehicleStrategy implements IStrategy{
+public class BaseInfoVehicleStrategy extends IStrategy{
 
-    @Override
-    public String handleData(String sourceData) {
-        System.out.println("baseInfoVehicle的handleData");
-        return null;
-    }
 
-    @Override
-    public void sendData(String sourceData) {
-        System.out.println("baseInfoVehicle的发送数据方法");
-    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
         StrategyFactory.register("baseInfoVehicle", this);
+    }
+
+    @Override
+    String handleData(String sourceData) {
+        return null;
     }
 }
