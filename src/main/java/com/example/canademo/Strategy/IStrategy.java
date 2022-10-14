@@ -1,5 +1,6 @@
 package com.example.canademo.Strategy;
 
+import com.example.canademo.utils.KafkaUtils;
 import org.springframework.beans.factory.InitializingBean;
 
 public abstract class IStrategy implements InitializingBean {
@@ -11,6 +12,7 @@ public abstract class IStrategy implements InitializingBean {
         String s = handleData(sourceData);
 
         //发送kafka
+        KafkaUtils.sendMessage(s);
     }
 
     //数据进一步组装

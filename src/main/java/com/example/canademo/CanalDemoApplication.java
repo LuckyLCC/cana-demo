@@ -1,21 +1,15 @@
 package com.example.canademo;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.canademo.Strategy.IStrategy;
 import com.example.canademo.factory.StrategyFactory;
 import com.example.canademo.utils.CanalConfig;
-import com.example.canademo.utils.DataInfo;
 import com.google.protobuf.InvalidProtocolBufferException;
-import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.sql.SQLOutput;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -31,10 +25,11 @@ public class CanalDemoApplication {
 
         while (true) {
             Thread.sleep(5000);
-//            List<String> data1 = canalConfig.getData();
-            ConcurrentLinkedQueue<String> clq = DataInfo.getClq();
+
+            ConcurrentLinkedQueue<String> clq = CanalConfig.getClq();
             String poll = clq.poll();
             System.out.println("取出的数据为" + poll);
+
 
             if (StringUtils.isEmpty(poll)) {
                 continue;

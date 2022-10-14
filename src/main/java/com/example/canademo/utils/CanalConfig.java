@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @Description: TODO
@@ -23,6 +24,18 @@ import java.util.List;
 
 public class CanalConfig implements Runnable {
 
+
+    private static ConcurrentLinkedQueue<String> clq = new ConcurrentLinkedQueue<>();
+
+
+
+    public static void setClq(String s) {
+        clq.add(s);
+    }
+
+    public static ConcurrentLinkedQueue<String> getClq() {
+        return clq;
+    }
 
     @Override
     public void run() {
@@ -106,12 +119,10 @@ public class CanalConfig implements Runnable {
                             System.out.println("Table:" + tableName + ",EventType:" + eventType + ",Before:" + beforeData + ",After:" + afterData);
 
                             if (afterData != null || afterData.isEmpty()) {
-//                                list.add(JSON.toJSONString(afterData));
-                                DataInfo.setClq(JSON.toJSONString(afterData));
+                                setClq(JSON.toJSONString(afterData));
                             }
                             if (beforeData != null || beforeData.isEmpty()) {
-//                                list.add(JSON.toJSONString(beforeData));
-                                DataInfo.setClq(JSON.toJSONString(beforeData));
+                                setClq(JSON.toJSONString(beforeData));
                             }
 
 
