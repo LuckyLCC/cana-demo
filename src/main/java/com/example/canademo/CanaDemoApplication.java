@@ -20,6 +20,7 @@ public class CanaDemoApplication {
         SpringApplication.run(CanaDemoApplication.class, args);
 
 
+
         //TODO 获取连接
         CanalConnector canalConnector = CanalConnectors.newSingleConnector(new InetSocketAddress("192.168.202.102", 11111), "example", "", "");
 
