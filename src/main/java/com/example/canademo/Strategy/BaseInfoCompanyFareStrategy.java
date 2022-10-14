@@ -11,9 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BaseInfoCompanyFareStrategy extends IStrategy{
-
     @Override
-    String handleData(String sourceData) {
+    public String handleData(String sourceData) {
         return null;
     }
 

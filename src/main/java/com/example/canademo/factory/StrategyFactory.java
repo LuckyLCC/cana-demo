@@ -17,10 +17,6 @@ public class StrategyFactory {
 
     private static final Map<String, IStrategy> strategies = new HashMap<>();
 
-//    static {
-//        strategies.put("baseInfoCompanyFare", new BaseInfoCompanyFareStrategy());
-//        strategies.put("baseInfoVehicleStrategy", new baseInfoVehicleStrategy());
-//    }
 
     public static IStrategy getStrategy(String type) {
         if (type == null || type.isEmpty()) {

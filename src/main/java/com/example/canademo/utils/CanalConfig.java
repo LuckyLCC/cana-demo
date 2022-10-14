@@ -23,12 +23,6 @@ import java.util.List;
 
 public class CanalConfig implements Runnable {
 
-    private List<String> list = new ArrayList<>();
-
-    public List<String> getData() {
-        return list;
-    }
-
 
     @Override
     public void run() {

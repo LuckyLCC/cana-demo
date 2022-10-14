@@ -21,7 +21,7 @@ public class BaseInfoVehicleStrategy extends IStrategy{
     }
 
     @Override
-    String handleData(String sourceData) {
+    public String handleData(String sourceData) {
         return null;
     }
 }
